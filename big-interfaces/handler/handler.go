@@ -6,11 +6,16 @@ import (
 	"strconv"
 	"strings"
 
-	whatever "github.com/kschaper/go-issues/big-interfaces"
+	"github.com/kschaper/go-issues/big-interfaces"
 )
 
+// UserGetter represents a service to get a user.
+type UserGetter interface {
+	GetUser(int) (*whatever.User, error)
+}
+
 // GetUserHandler handles GET /user/123
-func GetUserHandler(env whatever.Env) func(w http.ResponseWriter, r *http.Request) {
+func GetUserHandler(userGetter UserGetter) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// get ID from URL path
 		parts := strings.Split(r.URL.String(), "/")
@@ -20,7 +25,7 @@ func GetUserHandler(env whatever.Env) func(w http.ResponseWriter, r *http.Reques
 			return
 		}
 
-		user, err := env.DB.UserService().GetUser(id)
+		user, err := userGetter.GetUser(id)
 		if err != nil {
 			fmt.Fprintf(w, "error: %s", err)
 			return

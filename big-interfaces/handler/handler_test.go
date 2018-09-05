@@ -25,18 +25,12 @@ func TestGetUserHandler(t *testing.T) {
 				return user, nil
 			},
 		}
-
-		env = whatever.Env{
-			DB: &mock.DatabaseClient{
-				UserServiceMock: userService,
-			},
-		}
 	)
 
 	// request
 	w := httptest.NewRecorder()
 	req := httptest.NewRequest("GET", fmt.Sprintf("http://example.com/users/%d", user.ID), nil)
-	handler.GetUserHandler(env)(w, req)
+	handler.GetUserHandler(userService)(w, req)
 	resp := w.Result()
 	body, _ := ioutil.ReadAll(resp.Body)
 

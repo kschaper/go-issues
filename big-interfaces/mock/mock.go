@@ -1,16 +1,8 @@
 package mock
 
-import whatever "github.com/kschaper/go-issues/big-interfaces"
-
-// DatabaseClient allows access to services and fakes database connectivity.
-type DatabaseClient struct {
-	UserServiceMock *UserService
-}
-
-// UserService returns a UserService.
-func (client *DatabaseClient) UserService() whatever.UserService {
-	return client.UserServiceMock
-}
+import (
+	whatever "github.com/kschaper/go-issues/big-interfaces"
+)
 
 // UserService manages users.
 type UserService struct {
